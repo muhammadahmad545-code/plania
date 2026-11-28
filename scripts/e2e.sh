@@ -260,7 +260,7 @@ tap_text "Stop"; sleep 1
 alive || fail "app is not running at the end of the end-to-end checks"
 
 # --- Appearance: draft preview, Apply, persistence after restart, reset -----------------------
-read -r AW AH <<<"$(adb shell wm size | grep -o '[0-9]*x[0-9]*' | tail -1 | tr x ' ')"; AH=${AH:-1920}
+read -r AW AH <<<"$(adb shell wm size | grep -o '[0-9]*x[0-9]*' | tail -1 | tr x ' ')"; AW=${AW:-1080}; AH=${AH:-1920}
 # Scroll until an exact label sits in the upper part of the screen (clear of bars), then tap it.
 scroll_tap() {
   for i in $(seq 1 10); do
@@ -311,7 +311,7 @@ swipe_to "Manrope font" >/dev/null
 if is_selected "Manrope font"; then pass "font choice survives a restart"; else fail "font choice survives a restart"; fi
 scroll_to "Reset to default" >/dev/null; tap_text "Reset to default"; sleep 1
 tap_text "Apply"; sleep 2
-scroll_top
+for i in 1 2 3 4 5 6 7 8; do adb shell input swipe $((AW/2)) $((AH*30/100)) $((AW/2)) $((AH*80/100)) 200; done; sleep 1
 for i in 1 2 3; do has_text "Plania accent" && break; swipe_up; done
 if is_selected "Plania accent"; then pass "Reset to default returns to the app colour"; else fail "Reset to default returns to the app colour"; fi
 back
